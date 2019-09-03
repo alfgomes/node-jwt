@@ -4,7 +4,7 @@
   "description": "Sistema Backend API com uso do JWT",
   "main": "server.js",
   "scripts": {
-    "test": "cls && nodemon server.js"
+    "test": "cls && echo Started at && powershell get-date -format ^\"{yyyy-MM-dd HH:mm:ss}^\" && nodemon server.js"
   },
   "author": "André Gomes",
   "license": "ISC",
