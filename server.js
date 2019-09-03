@@ -8,12 +8,29 @@ app.get('/api', (req, res) => {
     })
 })
 
+app.get('/api/jwtexpiration', (req, res) => {
+    jwt.verify(req.token, 'secretkey', (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+
+            logServerMessage("Error:" + err)
+        }
+        else {
+            res.json({
+                message: new Date(authData.exp * 1000)
+            })
+
+            logServerMessage("Access successful At:" + new Date(authData.exp * 1000))
+        }
+    })
+})
+
 app.post('/api/posts', verifyToken, (req, res) => {
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if (err) {
             res.sendStatus(403)
 
-            clearServerMessage("Error:" + err)
+            logServerMessage("Error:" + err)
         }
         else {
             res.json({
@@ -21,7 +38,7 @@ app.post('/api/posts', verifyToken, (req, res) => {
                 authData: authData
             })
 
-            clearServerMessage("Access successful At:" + new Date(authData.exp*1000))
+            logServerMessage("Access successful At:" + new Date(authData.exp*1000))
         }
     })
 })
@@ -37,7 +54,7 @@ app.post('/api/login', (req, res) => {
             token: token
         })
 
-        clearServerMessage("Generated token!")
+        logServerMessage("Generated token!")
     })
 })
 
@@ -53,10 +70,11 @@ function verifyToken(req, res, next) {
     }
 }
 
-function clearServerMessage(message) {
+function logServerMessage(message) {
     console.clear();
     console.log('Server started on Port 5000');
-    console.log(message);
+    if (message != undefined)
+        console.log(message);
 }
 
 
@@ -66,7 +84,6 @@ function clearServerMessage(message) {
 
 app.listen(5000,
     () => {
-        console.clear();
-        console.log('Server started on Port 5000');
+        logServerMessage();
     }
 )
