@@ -58,6 +58,7 @@ app.post('/api/login', (req, res) => {
     })
 })
 
+//Middlewares...
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
     if (typeof bearerHeader !== 'undefined') {
@@ -70,6 +71,7 @@ function verifyToken(req, res, next) {
     }
 }
 
+//Common Methods...
 function logServerMessage(message) {
     console.clear();
     console.log('Server started on Port 5000');
